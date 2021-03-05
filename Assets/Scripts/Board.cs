@@ -7,16 +7,17 @@ using UnityEngine;
 public class Board : MonoBehaviour
 {
     public BallSlot ballSlotPrefab;
-    public Ball ballPrefab;
     public GameObject ballSlotsContainer;
 
     private PathCreator pathCreator;
+    private BallFactory ballFactory;
 
     private BallSlot[] ballSlots;
 
     void Start()
     {
         pathCreator = FindObjectOfType<PathCreator>();
+        ballFactory = FindObjectOfType<BallFactory>();
         
         InitBallSlots();
     }
@@ -44,8 +45,9 @@ public class Board : MonoBehaviour
         BallSlot zeroSlot = ballSlots.OrderBy(bs => bs.distanceTraveled).ToArray()[0];
         if (!zeroSlot.ball)
         {
-            Ball ball = Instantiate(ballPrefab, zeroSlot.transform);
+            Ball ball = ballFactory.CreateBallAt(zeroSlot.transform.position);
             zeroSlot.ball = ball;
+            ball.transform.parent = zeroSlot.transform;
             ball.transform.localScale = Vector3.zero;
             ball.state = BallState.Spawning;
         }

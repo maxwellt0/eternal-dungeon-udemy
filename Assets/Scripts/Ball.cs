@@ -11,6 +11,7 @@ public class Ball : MonoBehaviour
     public BallState state;
     private float upscaleCounter;
     private float downscaleCounter = 1f;
+    private Vector3 shootDirection;
 
     private void Start()
     {
@@ -45,6 +46,28 @@ public class Ball : MonoBehaviour
             
                 transform.localScale = Vector3.one * downscaleCounter;
                 break;
+            case BallState.Shooting:
+                transform.position += shootDirection * (gameProperties.ballShootingSpeed * Time.deltaTime);
+                break;
+        }
+    }
+    
+    public void Shoot(Vector3 direction)
+    {
+        shootDirection = direction;
+        state = BallState.Shooting;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Ball Slot"))
+        {
+            BallSlot ballSlot = other.GetComponent<BallSlot>();
+
+            if (ballSlot.ball)
+            {
+                Debug.Log("Boo!!");
+            }
         }
     }
 }

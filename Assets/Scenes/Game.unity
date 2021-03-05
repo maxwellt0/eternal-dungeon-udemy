@@ -360,8 +360,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballSlotPrefab: {fileID: 7414170098995453678, guid: 5050eb04085a842fd818a32fe2f841d9,
     type: 3}
-  ballPrefab: {fileID: 6182612035540633547, guid: ba6722b744b934053bdb1c161983d044,
-    type: 3}
   ballSlotsContainer: {fileID: 598134235}
 --- !u!1 &1078741372
 GameObject:
@@ -563,6 +561,7 @@ MonoBehaviour:
   ballUpscaleSpeed: 2
   ballDownscaleSpeed: 2
   ballSlotsSpeed: 4
+  ballShootingSpeed: 20
 --- !u!4 &1187689346
 Transform:
   m_ObjectHideFlags: 0
@@ -576,6 +575,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1968165788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1968165790}
+  - component: {fileID: 1968165789}
+  m_Layer: 0
+  m_Name: Ball Factory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1968165789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968165788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 165dcc2ed0ab412eb857372eb613008a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballPrefab: {fileID: 6182612035540633547, guid: ba6722b744b934053bdb1c161983d044,
+    type: 3}
+--- !u!4 &1968165790
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968165788}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2033692304
 GameObject:
@@ -671,3 +715,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bcbf656517784fa08781f26c780729c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nextShootBall: {fileID: 0}
