@@ -8,8 +8,9 @@ public class Ball : MonoBehaviour
 {
     private GameProperties gameProperties;
     
-    public bool isSpawning;
+    public BallState state;
     private float upscaleCounter;
+    private float downscaleCounter = 1f;
 
     private void Start()
     {
@@ -18,17 +19,32 @@ public class Ball : MonoBehaviour
 
     private void Update()
     {
-        if (isSpawning)
+        switch (state)
         {
-            upscaleCounter += gameProperties.ballUpscaleSpeed * Time.deltaTime;
-            
-            if (upscaleCounter >= 1)
+            case BallState.Spawning:
             {
-                isSpawning = false;
-                return;
-            }
+                upscaleCounter += gameProperties.ballUpscaleSpeed * Time.deltaTime;
             
-            transform.localScale = Vector3.one * upscaleCounter;
+                if (upscaleCounter >= 1)
+                {
+                    state = BallState.InSlot;
+                    return;
+                }
+            
+                transform.localScale = Vector3.one * upscaleCounter;
+                break;
+            }
+            case BallState.Destroying:
+                downscaleCounter -= gameProperties.ballDownscaleSpeed * Time.deltaTime;
+            
+                if (downscaleCounter < 0)
+                {
+                    Destroy(gameObject);
+                    return;
+                }
+            
+                transform.localScale = Vector3.one * downscaleCounter;
+                break;
         }
     }
 }

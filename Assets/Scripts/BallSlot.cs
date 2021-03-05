@@ -6,6 +6,7 @@ using UnityEngine;
 public class BallSlot : MonoBehaviour
 {
     private PathCreator pathCreator;
+    private GameProperties gameProperties;
 
     public Ball ball;
     public float distanceTraveled;
@@ -13,11 +14,12 @@ public class BallSlot : MonoBehaviour
     void Start()
     {
         pathCreator = FindObjectOfType<PathCreator>();
+        gameProperties = FindObjectOfType<GameProperties>();
     }
     
     void Update()
     {
-        distanceTraveled += Time.deltaTime;
+        distanceTraveled += gameProperties.ballSlotsSpeed * Time.deltaTime;
         if (distanceTraveled > pathCreator.path.length)
         {
             distanceTraveled = 0;
