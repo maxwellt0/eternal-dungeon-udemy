@@ -12,4 +12,5 @@ public class GameProperties : MonoBehaviour
     public float ballSlotSwitchingSpeed = 5f;
     
     public int bombRadius = 1;
+    public float reverseDuration = 2f;
 }
