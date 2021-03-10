@@ -10,7 +10,7 @@ public class BallSlot : MonoBehaviour
 
     public Ball ball;
     public float distanceTraveled;
-    public int direction = 1;
+    public float speedMultiplier = 1;
 
     void Start()
     {
@@ -20,13 +20,13 @@ public class BallSlot : MonoBehaviour
     
     void Update()
     {
-        distanceTraveled += direction * gameProperties.ballSlotsSpeed * Time.deltaTime;
+        distanceTraveled += speedMultiplier * gameProperties.ballSlotsSpeed * Time.deltaTime;
         if (distanceTraveled > pathCreator.path.length)
         {
             distanceTraveled = 0;
         }
         
-        if (direction == -1 && distanceTraveled < 1f && ball)
+        if (speedMultiplier < 0 && distanceTraveled < 1f && ball)
         {
             if (distanceTraveled < 0.5f)
             {

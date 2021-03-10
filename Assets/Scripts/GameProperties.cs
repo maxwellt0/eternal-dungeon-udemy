@@ -13,4 +13,5 @@ public class GameProperties : MonoBehaviour
     
     public int bombRadius = 1;
     public float reverseDuration = 2f;
+    public float timeSlowDuration = 2f;
 }

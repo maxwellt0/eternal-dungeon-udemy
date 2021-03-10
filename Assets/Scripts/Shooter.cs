@@ -27,7 +27,8 @@ public class Shooter : MonoBehaviour
             nextShootBall = ballFactory.CreateRandomBallAt(transform.position);
         }
 
-        if (Input.GetMouseButtonDown(0) && !board.isDestroyingMatchingBalls)
+        if (Input.GetMouseButtonDown(0) 
+            && !board.isDestroyingMatchingBalls && !board.isReverse)
         {
             Vector3 shootDirection = (GetMousePos() - transform.position).normalized;
             
