@@ -112,4 +112,9 @@ public class Ball : MonoBehaviour
     {
         state = BallState.SwitchingSlots;
     }
+    
+    public void StartDestroying()
+    {
+        state = BallState.Destroying;
+    }
 }
