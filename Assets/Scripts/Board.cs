@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using PathCreation;
@@ -42,14 +43,59 @@ public class Board : MonoBehaviour
     
     void Update()
     {
-        BallSlot zeroSlot = ballSlots.OrderBy(bs => bs.distanceTraveled).ToArray()[0];
+        BallSlot zeroSlot = BallSlotsByDistance[0];
         if (!zeroSlot.ball)
         {
             Ball ball = ballFactory.CreateRandomBallAt(zeroSlot.transform.position);
-            zeroSlot.ball = ball;
+            zeroSlot.AssignBall(ball);
             ball.transform.parent = zeroSlot.transform;
             ball.transform.localScale = Vector3.zero;
             ball.state = BallState.Spawning;
         }
     }
+    
+    public void LandBall(BallSlot collidedSlot, Ball landingBall)
+    {
+        BallSlot[] ballSlotsByDistance = BallSlotsByDistance;
+        int indexOfCollidedSlot = Array.IndexOf(ballSlotsByDistance, collidedSlot);
+
+        int firstEmptySlotIndexAfter = FirstEmptySlotIndexAfter(indexOfCollidedSlot, ballSlotsByDistance);
+
+        for (int i = firstEmptySlotIndexAfter; i > indexOfCollidedSlot + 1; i--)
+        {
+            ballSlotsByDistance[i].AssignBall(ballSlotsByDistance[i - 1].ball);
+        }
+
+        if (collidedSlot.distanceTraveled <
+            pathCreator.path.GetClosestDistanceAlongPath(landingBall.transform.position))
+        {
+            ballSlotsByDistance[indexOfCollidedSlot + 1].AssignBall(landingBall);
+        }
+        else
+        {
+            ballSlotsByDistance[indexOfCollidedSlot + 1].AssignBall(collidedSlot.ball);
+            collidedSlot.AssignBall(landingBall);
+        }
+        
+        landingBall.Land();
+        foreach (BallSlot ballSlot in ballSlotsByDistance.Where(bs => bs.ball && bs.ball.state == BallState.InSlot))
+        {
+            ballSlot.ball.MoveToSlot();
+        }
+    }
+
+    private static int FirstEmptySlotIndexAfter(int indexOfCollidedSlot, BallSlot[] ballSlotsByDistance)
+    {
+        for (int i = indexOfCollidedSlot; i < ballSlotsByDistance.Length; i++)
+        {
+            if (!ballSlotsByDistance[i].ball)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public BallSlot[] BallSlotsByDistance => ballSlots.OrderBy(bs => bs.distanceTraveled).ToArray();
 }
