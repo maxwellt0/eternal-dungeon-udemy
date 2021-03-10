@@ -94,23 +94,33 @@ public class Board : MonoBehaviour
     
     private IEnumerator DestroyMatchingBallsCo(BallSlot landedBallSlot)
     {
-        yield return new WaitUntil(() => BallSlotsByDistance.All(bs =>
-            !bs.ball || bs.ball.state != BallState.Landing && bs.ball.state != BallState.SwitchingSlots));
+        List<BallSlot> ballsToDestroySlots;
+        BallSlot collidedBallSlot = landedBallSlot;
 
-        List<BallSlot> ballsToDestroySlots = GetSimilarBalls(landedBallSlot);
-
-        if (ballsToDestroySlots.Count >= 3)
+        do
         {
+            yield return new WaitUntil(() => BallSlotsByDistance.All(bs =>
+                !bs.ball || bs.ball.state != BallState.Landing && bs.ball.state != BallState.SwitchingSlots));
+
+            ballsToDestroySlots = GetSimilarBalls(collidedBallSlot);
+
+            if (ballsToDestroySlots.Count < 3)
+            {
+                break;
+            }
+
             foreach (BallSlot ballsToDestroySlot in ballsToDestroySlots)
             {
                 ballsToDestroySlot.ball.StartDestroying();
                 ballsToDestroySlot.AssignBall(null);
             }
-            
+
+            collidedBallSlot = ballsToDestroySlots[0];
+
             yield return new WaitForSeconds(0.5f);
 
             MoveSeparatedBallsBack();
-        }
+        } while (ballsToDestroySlots.Count >= 3 && collidedBallSlot);
     }
     
     private void MoveSeparatedBallsBack()
@@ -142,6 +152,12 @@ public class Board : MonoBehaviour
     private List<BallSlot> GetSimilarBalls(BallSlot landedBallSlot)
     {
         List<BallSlot> ballsToDestroySlots = new List<BallSlot> {landedBallSlot};
+        
+        if (!landedBallSlot.ball)
+        {
+            return ballsToDestroySlots;
+        }
+
         int indexOfLandedBallSlot = Array.IndexOf(BallSlotsByDistance, landedBallSlot);
 
         for (int i = indexOfLandedBallSlot - 1; i >= 0; i--)
@@ -170,7 +186,7 @@ public class Board : MonoBehaviour
             }
         }
 
-        return ballsToDestroySlots;
+        return ballsToDestroySlots.OrderBy(bs => bs.distanceTraveled).ToList();
     }
 
     private static int FirstEmptySlotIndexAfter(int indexOfCollidedSlot, BallSlot[] ballSlotsByDistance)
