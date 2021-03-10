@@ -8,4 +8,5 @@ public class GameProperties : MonoBehaviour
     public float ballDownscaleSpeed = 2f;
     public float ballSlotsSpeed = 4f;
     public float ballShootingSpeed = 20f;
+    public float ballLandingSpeed = 5f;
 }
