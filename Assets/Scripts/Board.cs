@@ -9,6 +9,8 @@ public class Board : MonoBehaviour
 {
     public BallSlot ballSlotPrefab;
     public GameObject ballSlotsContainer;
+    
+    public bool isDestroyingMatchingBalls;
 
     private PathCreator pathCreator;
     private BallFactory ballFactory;
@@ -51,7 +53,7 @@ public class Board : MonoBehaviour
         BallSlot zeroSlot = BallSlotsByDistance[0];
         if (!zeroSlot.ball)
         {
-            Ball ball = ballFactory.CreateRandomBallAt(zeroSlot.transform.position);
+            Ball ball = ballFactory.CreateBallAt(zeroSlot.transform.position, ballFactory.GetRandomBallType());
             zeroSlot.AssignBall(ball);
             ball.transform.parent = zeroSlot.transform;
             ball.transform.localScale = Vector3.zero;
@@ -94,6 +96,8 @@ public class Board : MonoBehaviour
     
     private IEnumerator DestroyMatchingBallsCo(BallSlot landedBallSlot)
     {
+        isDestroyingMatchingBalls = true;
+        
         List<BallSlot> ballsToDestroySlots;
         BallSlot collidedBallSlot = landedBallSlot;
 
@@ -121,6 +125,10 @@ public class Board : MonoBehaviour
 
             MoveSeparatedBallsBack();
         } while (ballsToDestroySlots.Count >= 3 && collidedBallSlot);
+        
+        yield return new WaitUntil(() => BallSlotsByDistance.All(bs =>
+            !bs.ball || bs.ball.state != BallState.SwitchingSlots));
+        isDestroyingMatchingBalls = false;
     }
     
     private void MoveSeparatedBallsBack()
@@ -163,7 +171,9 @@ public class Board : MonoBehaviour
         for (int i = indexOfLandedBallSlot - 1; i >= 0; i--)
         {
             BallSlot ballSlot = BallSlotsByDistance[i];
-            if (ballSlot.ball && !ballsToDestroySlots.Contains(ballSlot) && ballSlot.ball.type == landedBallSlot.ball.type)
+            if (ballSlot.ball && !ballsToDestroySlots.Contains(ballSlot)
+                              && BallUtil.GetBallColorByType(ballSlot.ball.type) ==
+                              BallUtil.GetBallColorByType(landedBallSlot.ball.type))
             {
                 ballsToDestroySlots.Add(ballSlot);
             }
@@ -176,7 +186,9 @@ public class Board : MonoBehaviour
         for (int i = indexOfLandedBallSlot + 1; i < BallSlotsByDistance.Length; i++)
         {
             BallSlot ballSlot = BallSlotsByDistance[i];
-            if (ballSlot.ball && !ballsToDestroySlots.Contains(ballSlot) && ballSlot.ball.type == landedBallSlot.ball.type)
+            if (ballSlot.ball && !ballsToDestroySlots.Contains(ballSlot) 
+                              && BallUtil.GetBallColorByType(ballSlot.ball.type) ==
+                              BallUtil.GetBallColorByType(landedBallSlot.ball.type))
             {
                 ballsToDestroySlots.Add(ballSlot);
             }

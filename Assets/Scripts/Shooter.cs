@@ -6,12 +6,14 @@ public class Shooter : MonoBehaviour
 {
     private Camera mainCamera;
     private BallFactory ballFactory;
+    private Board board;
 
     public Ball nextShootBall;
     
     void Start()
     {
         ballFactory = FindObjectOfType<BallFactory>();
+        board = FindObjectOfType<Board>();
         
         mainCamera = Camera.main;
     }
@@ -25,7 +27,7 @@ public class Shooter : MonoBehaviour
             nextShootBall = ballFactory.CreateRandomBallAt(transform.position);
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !board.isDestroyingMatchingBalls)
         {
             Vector3 shootDirection = (GetMousePos() - transform.position).normalized;
             
