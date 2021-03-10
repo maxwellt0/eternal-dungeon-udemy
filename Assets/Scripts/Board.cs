@@ -59,14 +59,16 @@ public class Board : MonoBehaviour
         }
 
         BallSlot zeroSlot = BallSlotsByDistance[0];
-        if (!zeroSlot.ball)
+        if (zeroSlot.ball)
         {
-            Ball ball = ballFactory.CreateBallAt(zeroSlot.transform.position, ballFactory.GetRandomBallType());
-            zeroSlot.AssignBall(ball);
-            ball.transform.parent = zeroSlot.transform;
-            ball.transform.localScale = Vector3.zero;
-            ball.state = BallState.Spawning;
+            return;
         }
+        
+        Ball ball = ballFactory.CreateBallAt(zeroSlot.transform.position, ballFactory.GetRandomBallType());
+        zeroSlot.AssignBall(ball);
+        ball.PlaceInSlotTransform();
+        ball.transform.localScale = Vector3.zero;
+        ball.state = BallState.Spawning;
     }
 
     public void LandBall(BallSlot collidedSlot, Ball landingBall)

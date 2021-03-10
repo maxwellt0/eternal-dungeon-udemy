@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using PathCreation;
+﻿using PathCreation;
 using UnityEngine;
 
 public class BallSlot : MonoBehaviour
