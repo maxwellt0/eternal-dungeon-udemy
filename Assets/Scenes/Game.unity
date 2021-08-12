@@ -562,6 +562,8 @@ MonoBehaviour:
   ballDownscaleSpeed: 2
   ballSlotsSpeed: 2
   ballShootingSpeed: 20
+  ballLandingSpeed: 5
+  ballSlotSwitchingSpeed: 5
 --- !u!4 &1187689346
 Transform:
   m_ObjectHideFlags: 0
@@ -610,6 +612,9 @@ MonoBehaviour:
   redSprite: {fileID: 21300000, guid: d11b9445ae4fb4078bd1a561b5deb580, type: 3}
   greenSprite: {fileID: 21300000, guid: 1f6daee5a50694e6fb670c22ffee42b5, type: 3}
   blueSprite: {fileID: 21300000, guid: 78eda39ef2dbd4d3f81c564a37a7ee46, type: 3}
+  bombSprite: {fileID: 21300000, guid: d985d446f05834f9ebf18d65d95a617e, type: 3}
+  reverseSprite: {fileID: 21300000, guid: 80a4bd87e4e294f9e95c1e749c75677b, type: 3}
+  timeSlowSprite: {fileID: 21300000, guid: 5d5eb6f1ec12d442f860b5d3882801ab, type: 3}
 --- !u!4 &1968165790
 Transform:
   m_ObjectHideFlags: 0
