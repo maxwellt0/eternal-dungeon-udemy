@@ -126,6 +126,10 @@ public class Board : MonoBehaviour
             {
                 StartCoroutine(StartReverseCo());
             }
+            if (ballsToDestroySlots.FindIndex(bs => bs.ball.type == BallType.TimeSlow) != -1)
+            {
+                StartCoroutine(TimeSlowCo());
+            }
 
             foreach (BallSlot ballsToDestroySlot in ballsToDestroySlots)
             {
@@ -144,6 +148,30 @@ public class Board : MonoBehaviour
             !bs.ball || bs.ball.state != BallState.SwitchingSlots));
         isDestroyingMatchingBalls = false;
     }
+
+    private IEnumerator TimeSlowCo()
+    {
+        yield return new WaitUntil(() => BallSlotsByDistance.All(bs =>
+                isDestroyingMatchingBalls == false 
+                && isReverse == false
+                && (!bs.ball 
+                    || bs.ball.state != BallState.Landing 
+                    && bs.ball.state != BallState.SwitchingSlots)
+            )
+        );
+
+        foreach (BallSlot ballSlot in ballSlots)
+        {
+            ballSlot.speedMultiplier = 0.5f;
+        }
+
+        yield return new WaitForSeconds(gameProperties.timeSlowDuration);
+        
+        foreach (BallSlot ballSlot in ballSlots)
+        {
+            ballSlot.speedMultiplier = 1f;
+        }
+    }
     
     private IEnumerator StartReverseCo()
     {
@@ -159,14 +187,14 @@ public class Board : MonoBehaviour
 
         foreach (BallSlot ballSlot in ballSlots)
         {
-            ballSlot.direction = -1;
+            ballSlot.speedMultiplier = -1;
         }
 
         yield return new WaitForSeconds(gameProperties.reverseDuration);
         
         foreach (BallSlot ballSlot in ballSlots)
         {
-            ballSlot.direction = 1;
+            ballSlot.speedMultiplier = 1;
         }
 
         isReverse = false;
