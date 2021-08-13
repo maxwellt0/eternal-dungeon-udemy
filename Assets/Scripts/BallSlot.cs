@@ -10,6 +10,7 @@ public class BallSlot : MonoBehaviour
 
     public Ball ball;
     public float distanceTraveled;
+    public int direction = 1;
 
     void Start()
     {
@@ -19,10 +20,29 @@ public class BallSlot : MonoBehaviour
     
     void Update()
     {
-        distanceTraveled += gameProperties.ballSlotsSpeed * Time.deltaTime;
+        distanceTraveled += direction * gameProperties.ballSlotsSpeed * Time.deltaTime;
         if (distanceTraveled > pathCreator.path.length)
         {
             distanceTraveled = 0;
+        }
+
+        if (direction == -1 && distanceTraveled < 1f && ball)
+        {
+            if (distanceTraveled < 0.5f)
+            {
+                Destroy(ball.gameObject);
+            }
+            else
+            {
+                ball.StartDestroying();
+            }
+            
+            AssignBall(null);
+        }
+
+        if (distanceTraveled < 0)
+        {
+            distanceTraveled = pathCreator.path.length;
         }
         
         transform.position = pathCreator.path.GetPointAtDistance(distanceTraveled);
