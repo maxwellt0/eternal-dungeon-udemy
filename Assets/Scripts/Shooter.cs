@@ -9,16 +9,16 @@ public class Shooter : MonoBehaviour
     private Board board;
 
     public Ball nextShootBall;
-    
-    void Start()
+
+    private void Start()
     {
         ballFactory = FindObjectOfType<BallFactory>();
         board = FindObjectOfType<Board>();
         
         mainCamera = Camera.main;
     }
-    
-    void Update()
+
+    private void Update()
     {
         FaceMouse();
 

@@ -9,7 +9,7 @@ public class Board : MonoBehaviour
 {
     public BallSlot ballSlotPrefab;
     public GameObject ballSlotsContainer;
-    
+
     public bool isDestroyingMatchingBalls;
     public bool isReverse;
 
@@ -31,7 +31,7 @@ public class Board : MonoBehaviour
     private void InitBallSlots()
     {
         float pathLength = pathCreator.path.length;
-        int slotsCount = (int) pathLength;
+        int slotsCount = (int)pathLength;
         float step = pathLength / slotsCount;
         ballSlots = new BallSlot[slotsCount];
 
@@ -59,14 +59,16 @@ public class Board : MonoBehaviour
         }
 
         BallSlot zeroSlot = BallSlotsByDistance[0];
-        if (!zeroSlot.ball)
+        if (zeroSlot.ball)
         {
-            Ball ball = ballFactory.CreateBallAt(zeroSlot.transform.position, ballFactory.GetRandomBallType());
-            zeroSlot.AssignBall(ball);
-            ball.transform.parent = zeroSlot.transform;
-            ball.transform.localScale = Vector3.zero;
-            ball.state = BallState.Spawning;
+            return;
         }
+
+        Ball ball = ballFactory.CreateBallAt(zeroSlot.transform.position, ballFactory.GetRandomBallType());
+        zeroSlot.AssignBall(ball);
+        ball.transform.parent = zeroSlot.transform;
+        ball.transform.localScale = Vector3.zero;
+        ball.state = BallState.Spawning;
     }
 
     public void LandBall(BallSlot collidedSlot, Ball landingBall)
@@ -91,21 +93,21 @@ public class Board : MonoBehaviour
             ballSlotsByDistance[indexOfCollidedSlot + 1].AssignBall(collidedSlot.ball);
             collidedSlot.AssignBall(landingBall);
         }
-        
+
         landingBall.Land();
         foreach (BallSlot ballSlot in ballSlotsByDistance
             .Where(bs => bs.ball && bs.ball.state == BallState.InSlot))
         {
             ballSlot.ball.MoveToSlot();
         }
-        
+
         StartCoroutine(DestroyMatchingBallsCo(landingBall.slot));
     }
-    
+
     private IEnumerator DestroyMatchingBallsCo(BallSlot landedBallSlot)
     {
         isDestroyingMatchingBalls = true;
-        
+
         List<BallSlot> ballsToDestroySlots;
         BallSlot collidedBallSlot = landedBallSlot;
 
@@ -120,12 +122,13 @@ public class Board : MonoBehaviour
             {
                 break;
             }
-            
+
             AddBallsIfThereIsBomb(ballsToDestroySlots);
             if (ballsToDestroySlots.FindIndex(bs => bs.ball.type == BallType.Reverse) != -1)
             {
                 StartCoroutine(StartReverseCo());
             }
+
             if (ballsToDestroySlots.FindIndex(bs => bs.ball.type == BallType.TimeSlow) != -1)
             {
                 StartCoroutine(TimeSlowCo());
@@ -143,42 +146,42 @@ public class Board : MonoBehaviour
 
             MoveSeparatedBallsBack();
         } while (ballsToDestroySlots.Count >= 3 && collidedBallSlot);
-        
+
         yield return new WaitUntil(() => BallSlotsByDistance.All(bs =>
             !bs.ball || bs.ball.state != BallState.SwitchingSlots));
         isDestroyingMatchingBalls = false;
     }
-    
+
     private IEnumerator TimeSlowCo()
     {
         yield return new WaitUntil(() => BallSlotsByDistance.All(bs =>
-                isDestroyingMatchingBalls == false 
+                isDestroyingMatchingBalls == false
                 && isReverse == false
-                && (!bs.ball 
-                    || bs.ball.state != BallState.Landing 
+                && (!bs.ball
+                    || bs.ball.state != BallState.Landing
                     && bs.ball.state != BallState.SwitchingSlots)
             )
         );
-        
+
         foreach (BallSlot ballSlot in ballSlots)
         {
             ballSlot.speedMultiplier = 0.5f;
         }
 
         yield return new WaitForSeconds(gameProperties.timeSlowDuration);
-        
+
         foreach (BallSlot ballSlot in ballSlots)
         {
             ballSlot.speedMultiplier = 1;
         }
     }
-    
+
     private IEnumerator StartReverseCo()
     {
         yield return new WaitUntil(() => BallSlotsByDistance.All(bs =>
-                isDestroyingMatchingBalls == false 
-                && (!bs.ball 
-                    || bs.ball.state != BallState.Landing 
+                isDestroyingMatchingBalls == false
+                && (!bs.ball
+                    || bs.ball.state != BallState.Landing
                     && bs.ball.state != BallState.SwitchingSlots)
             )
         );
@@ -191,7 +194,7 @@ public class Board : MonoBehaviour
         }
 
         yield return new WaitForSeconds(gameProperties.reverseDuration);
-        
+
         foreach (BallSlot ballSlot in ballSlots)
         {
             ballSlot.speedMultiplier = 1;
@@ -199,7 +202,7 @@ public class Board : MonoBehaviour
 
         isReverse = false;
     }
-    
+
     private void AddBallsIfThereIsBomb(List<BallSlot> ballsToDestroySlots)
     {
         BallSlot ballSlot = ballsToDestroySlots.FirstOrDefault(bs => bs.ball.type == BallType.Bomb);
@@ -253,8 +256,8 @@ public class Board : MonoBehaviour
 
     private List<BallSlot> GetSimilarBalls(BallSlot landedBallSlot)
     {
-        List<BallSlot> ballsToDestroySlots = new List<BallSlot> {landedBallSlot};
-        
+        List<BallSlot> ballsToDestroySlots = new List<BallSlot> { landedBallSlot };
+
         if (!landedBallSlot.ball)
         {
             return ballsToDestroySlots;
@@ -280,7 +283,7 @@ public class Board : MonoBehaviour
         for (int i = indexOfLandedBallSlot + 1; i < BallSlotsByDistance.Length; i++)
         {
             BallSlot ballSlot = BallSlotsByDistance[i];
-            if (ballSlot.ball && !ballsToDestroySlots.Contains(ballSlot) 
+            if (ballSlot.ball && !ballsToDestroySlots.Contains(ballSlot)
                               && BallUtil.GetBallColorByType(ballSlot.ball.type) ==
                               BallUtil.GetBallColorByType(landedBallSlot.ball.type))
             {
