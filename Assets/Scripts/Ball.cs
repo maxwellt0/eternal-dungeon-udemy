@@ -1,4 +1,5 @@
-﻿using PathCreation;
+﻿using System;
+using PathCreation;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
@@ -33,13 +34,26 @@ public class Ball : MonoBehaviour
     {
         switch (state)
         {
-            case BallState.Spawning:
+            case BallState.SpawningOnTrack:
             {
                 upscaleCounter += gameProperties.ballUpscaleSpeed * Time.deltaTime;
             
                 if (upscaleCounter >= 1)
                 {
                     state = BallState.InSlot;
+                    return;
+                }
+            
+                transform.localScale = Vector3.one * upscaleCounter;
+                break;
+            }
+            case BallState.SpawningToShoot:
+            {
+                upscaleCounter += gameProperties.ballUpscaleSpeed * Time.deltaTime;
+            
+                if (upscaleCounter >= 1)
+                {
+                    state = BallState.ReadyToShoot;
                     return;
                 }
             
@@ -83,6 +97,12 @@ public class Ball : MonoBehaviour
                     PlaceInSlotTransform();
                 }
                 break;
+            case BallState.InSlot:
+                break;
+            case BallState.ReadyToShoot:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 

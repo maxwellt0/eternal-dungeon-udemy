@@ -16,6 +16,7 @@ public class Board : MonoBehaviour
     private PathCreator pathCreator;
     private BallFactory ballFactory;
     private GameProperties gameProperties;
+    private Shooter shooter;
 
     private BallSlot[] ballSlots;
 
@@ -24,6 +25,7 @@ public class Board : MonoBehaviour
         pathCreator = FindObjectOfType<PathCreator>();
         ballFactory = FindObjectOfType<BallFactory>();
         gameProperties = FindObjectOfType<GameProperties>();
+        shooter = FindObjectOfType<Shooter>();
 
         InitBallSlots();
     }
@@ -68,7 +70,7 @@ public class Board : MonoBehaviour
         zeroSlot.AssignBall(ball);
         ball.PlaceInSlotTransform();
         ball.transform.localScale = Vector3.zero;
-        ball.state = BallState.Spawning;
+        ball.state = BallState.SpawningOnTrack;
     }
 
     public void LandBall(BallSlot collidedSlot, Ball landingBall)
@@ -107,7 +109,8 @@ public class Board : MonoBehaviour
     private IEnumerator DestroyMatchingBallsCo(BallSlot landedBallSlot)
     {
         isDestroyingMatchingBalls = true;
-        
+        shooter.isShooterDisabledFromOutside = true;
+
         List<BallSlot> ballsToDestroySlots;
         BallSlot collidedBallSlot = landedBallSlot;
 
@@ -144,7 +147,9 @@ public class Board : MonoBehaviour
         
         yield return new WaitUntil(() => BallSlotsByDistance.All(bs =>
             !bs.ball || bs.ball.state != BallState.SwitchingSlots));
+        
         isDestroyingMatchingBalls = false;
+        shooter.isShooterDisabledFromOutside = false;
     }
     
     private void DestroyAllBallsInList(List<BallSlot> ballsToDestroySlots)
@@ -192,6 +197,7 @@ public class Board : MonoBehaviour
         );
 
         isReverse = true;
+        shooter.isShooterDisabledFromOutside = true;
 
         foreach (BallSlot ballSlot in ballSlots)
         {
@@ -206,6 +212,7 @@ public class Board : MonoBehaviour
         }
 
         isReverse = false;
+        shooter.isShooterDisabledFromOutside = false;
     }
     
     private void AddBallsIfThereIsBomb(List<BallSlot> ballsToDestroySlots)
