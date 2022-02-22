@@ -9,6 +9,7 @@ public class Ball : MonoBehaviour
     private GameProperties gameProperties;
     
     public BallState state;
+    public BallType type;
     private float upscaleCounter;
     private float downscaleCounter = 1f;
     private Vector3 shootDirection;
@@ -64,7 +65,7 @@ public class Ball : MonoBehaviour
         {
             BallSlot ballSlot = other.GetComponent<BallSlot>();
 
-            if (ballSlot.ball)
+            if (ballSlot.ball && state == BallState.Shooting)
             {
                 Debug.Log("Boo!!");
             }
