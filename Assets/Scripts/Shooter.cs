@@ -10,6 +10,8 @@ public class Shooter : MonoBehaviour
     
     private Camera mainCamera;
     private BallFactory ballFactory;
+    private AudioManager audioManager;
+    
     private SpriteRenderer spriteRenderer;
 
     public Ball nextShootBall;
@@ -18,6 +20,8 @@ public class Shooter : MonoBehaviour
     private void Start()
     {
         ballFactory = FindObjectOfType<BallFactory>();
+        audioManager = FindObjectOfType<AudioManager>();
+        
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         mainCamera = Camera.main;
@@ -37,6 +41,7 @@ public class Shooter : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && !isShooterDisabledFromOutside)
         {
+            audioManager.PlaySfx(2);
             ShootNextBall();
         }
     }

@@ -15,6 +15,7 @@ public class Board : MonoBehaviour
 
     private PathCreator pathCreator;
     private BallFactory ballFactory;
+    private AudioManager audioManager;
     private GameProperties gameProperties;
     private Shooter shooter;
 
@@ -26,8 +27,10 @@ public class Board : MonoBehaviour
         ballFactory = FindObjectOfType<BallFactory>();
         gameProperties = FindObjectOfType<GameProperties>();
         shooter = FindObjectOfType<Shooter>();
+        audioManager = FindObjectOfType<AudioManager>();
 
         InitBallSlots();
+        audioManager.PlayRandomMusic();
     }
 
     private void InitBallSlots()
@@ -75,6 +78,8 @@ public class Board : MonoBehaviour
 
     public void LandBall(BallSlot collidedSlot, Ball landingBall)
     {
+        audioManager.PlaySfx(0);
+        
         BallSlot[] ballSlotsByDistance = BallSlotsByDistance;
         int indexOfCollidedSlot = Array.IndexOf(ballSlotsByDistance, collidedSlot);
 
@@ -160,6 +165,8 @@ public class Board : MonoBehaviour
             ballsToDestroySlot.ball.StartDestroying();
             ballsToDestroySlot.AssignBall(null);
         }
+        
+        audioManager.PlaySfx(1);
     }
     
     private IEnumerator TimeSlowCo()
