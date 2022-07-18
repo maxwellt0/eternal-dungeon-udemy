@@ -11,6 +11,7 @@ public class Shooter : MonoBehaviour
     private Camera mainCamera;
     private BallFactory ballFactory;
     private AudioManager audioManager;
+    private Board board;
     
     private SpriteRenderer spriteRenderer;
 
@@ -21,6 +22,7 @@ public class Shooter : MonoBehaviour
     {
         ballFactory = FindObjectOfType<BallFactory>();
         audioManager = FindObjectOfType<AudioManager>();
+        board = FindObjectOfType<Board>();
         
         spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -29,8 +31,11 @@ public class Shooter : MonoBehaviour
 
     private void Update()
     {
-        FaceMouse();
-        UpdateSprite();
+        if (!board.isPaused)
+        {
+            FaceMouse();
+            UpdateSprite();
+        }
 
         if (!nextShootBall)
         {
@@ -39,7 +44,7 @@ public class Shooter : MonoBehaviour
             nextShootBall.transform.parent = shootPoint;
         }
 
-        if (Input.GetMouseButtonDown(0) && !isShooterDisabledFromOutside)
+        if (Input.GetMouseButtonUp(0) && !isShooterDisabledFromOutside && !board.isPaused)
         {
             audioManager.PlaySfx(2);
             ShootNextBall();
