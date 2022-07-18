@@ -62,7 +62,8 @@ public class Ball : MonoBehaviour
             }
             case BallState.Destroying:
                 float multiplier = downscaleCounter > 0.9f ? 0.3f : 1;
-                downscaleCounter -= multiplier * gameProperties.ballDownscaleSpeed * Time.deltaTime;
+                downscaleCounter -= multiplier * gameProperties.GetSlotSpeedMultiplier(1) 
+                                               * gameProperties.ballDownscaleSpeed * Time.deltaTime;
             
                 if (downscaleCounter < 0)
                 {
@@ -78,7 +79,7 @@ public class Ball : MonoBehaviour
             case BallState.Landing:
                 transform.position =
                     Vector3.MoveTowards(transform.position, slot.transform.position, 
-                        gameProperties.ballLandingSpeed * Time.deltaTime);
+                        gameProperties.ballLandingSpeed * gameProperties.GetSlotSpeedMultiplier(1) * Time.deltaTime);
                 if (Vector3.Distance(transform.position, slot.transform.position) < 0.1f)
                 {
                     state = BallState.InSlot;
@@ -88,7 +89,8 @@ public class Ball : MonoBehaviour
                 break;
             case BallState.SwitchingSlots:
                 int direction = distanceTraveled > slot.distanceTraveled ? -1 : 1;
-                distanceTraveled += direction * gameProperties.ballSlotSwitchingSpeed * Time.deltaTime;
+                distanceTraveled += direction * gameProperties.ballSlotSwitchingSpeed 
+                                              * gameProperties.GetSlotSpeedMultiplier(1) * Time.deltaTime;
 
                 transform.position = pathCreator.path.GetPointAtDistance(distanceTraveled);
                 if (Mathf.Abs(distanceTraveled - slot.distanceTraveled) < 0.1f)

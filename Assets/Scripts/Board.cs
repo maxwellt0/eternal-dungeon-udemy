@@ -19,8 +19,10 @@ public class Board : MonoBehaviour
     private AudioManager audioManager;
     private GameProperties gameProperties;
     private Shooter shooter;
+    private GameUICanvas gameUICanvas;
 
     private BallSlot[] ballSlots;
+    private float levelTime;
 
     private void Start()
     {
@@ -29,11 +31,14 @@ public class Board : MonoBehaviour
         gameProperties = FindObjectOfType<GameProperties>();
         shooter = FindObjectOfType<Shooter>();
         audioManager = FindObjectOfType<AudioManager>();
+        gameUICanvas = FindObjectOfType<GameUICanvas>();
 
         InitBallSlots();
         audioManager.PlayRandomMusic();
 
         Time.timeScale = 1;
+        gameUICanvas.UpdateLevelNumber(gameProperties.LastLevel);
+        gameUICanvas.UpdateLevelTime(0f);
     }
 
     private void InitBallSlots()
@@ -50,12 +55,23 @@ public class Board : MonoBehaviour
             BallSlot ballSlot = Instantiate(ballSlotPrefab, slotPos, Quaternion.identity);
             ballSlot.distanceTraveled = distanceTraveled;
             ballSlot.transform.parent = ballSlotsContainer.transform;
+            ballSlot.speedMultiplier = gameProperties.GetSlotSpeedMultiplier(1);
             ballSlots[i] = ballSlot;
         }
     }
 
     private void Update()
     {
+        levelTime += Time.deltaTime;
+        gameUICanvas.UpdateLevelTime(levelTime);
+
+        if (levelTime >= gameProperties.levelDurationSeconds)
+        {
+            gameProperties.IncrementLastLevel();
+            gameUICanvas.UpdateLevelNumber(gameProperties.LastLevel);
+            levelTime = 0;
+        }
+        
         ProduceBallsOnTrack();
     }
 
@@ -185,14 +201,14 @@ public class Board : MonoBehaviour
         
         foreach (BallSlot ballSlot in ballSlots)
         {
-            ballSlot.speedMultiplier = 0.5f;
+            ballSlot.speedMultiplier = gameProperties.GetSlotSpeedMultiplier(0.5f);
         }
 
         yield return new WaitForSeconds(gameProperties.timeSlowDuration);
         
         foreach (BallSlot ballSlot in ballSlots)
         {
-            ballSlot.speedMultiplier = 1;
+            ballSlot.speedMultiplier = gameProperties.GetSlotSpeedMultiplier(1);
         }
     }
 
@@ -211,14 +227,14 @@ public class Board : MonoBehaviour
 
         foreach (BallSlot ballSlot in ballSlots)
         {
-            ballSlot.speedMultiplier = -1;
+            ballSlot.speedMultiplier = gameProperties.GetSlotSpeedMultiplier(-1);
         }
 
         yield return new WaitForSeconds(gameProperties.reverseDuration);
         
         foreach (BallSlot ballSlot in ballSlots)
         {
-            ballSlot.speedMultiplier = 1;
+            ballSlot.speedMultiplier = gameProperties.GetSlotSpeedMultiplier(1);
         }
 
         isReverse = false;
