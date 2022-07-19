@@ -42,4 +42,10 @@ public class GameProperties : MonoBehaviour
     {
         return effectMultiplier * (1 + lastLevel * slotSpeedUpPerLevel);
     }
+
+    public void ResetLastLevel()
+    {
+        lastLevel = 1;
+        PlayerPrefs.SetInt(KeyLastLevel, lastLevel);
+    }
 }
