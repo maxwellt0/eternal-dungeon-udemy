@@ -1,7 +1,15 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class BallDestroyer : MonoBehaviour
 {
+    private Board board;
+
+    private void Start()
+    {
+        board = FindObjectOfType<Board>();
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Ball Slot"))
@@ -18,5 +26,10 @@ public class BallDestroyer : MonoBehaviour
 
         ballSlot.ball.state = BallState.Destroying;
         ballSlot.ball = null;
+
+        if (!board.isGameOver)
+        {
+            board.GameOver();
+        }
     }
 }

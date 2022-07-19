@@ -2,21 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameUICanvas : MonoBehaviour
 {
     public TextMeshProUGUI levelTime;
     public TextMeshProUGUI levelNumber;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameObject gameOverPanel;
+    public GameObject gameUIPanel;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        gameOverPanel.SetActive(false);
     }
 
     public void UpdateLevelTime(float time)
@@ -29,5 +26,21 @@ public class GameUICanvas : MonoBehaviour
     public void UpdateLevelNumber(int level)
     {
         levelNumber.text = "Level " + level;
+    }
+
+    public void ShowGameOver()
+    {
+        gameOverPanel.SetActive(true);
+        gameUIPanel.SetActive(false);
+    }
+
+    public void PlayAgain()
+    {
+        SceneManager.LoadScene("Game");
+    }
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene("Main Menu");
     }
 }

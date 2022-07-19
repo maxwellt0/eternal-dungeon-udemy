@@ -13,6 +13,7 @@ public class Board : MonoBehaviour
     public bool isDestroyingMatchingBalls;
     public bool isReverse;
     public bool isPaused;
+    public bool isGameOver;
 
     private PathCreator pathCreator;
     private BallFactory ballFactory;
@@ -62,14 +63,17 @@ public class Board : MonoBehaviour
 
     private void Update()
     {
-        levelTime += Time.deltaTime;
-        gameUICanvas.UpdateLevelTime(levelTime);
-
-        if (levelTime >= gameProperties.levelDurationSeconds)
+        if (!isGameOver)
         {
-            gameProperties.IncrementLastLevel();
-            gameUICanvas.UpdateLevelNumber(gameProperties.LastLevel);
-            levelTime = 0;
+            levelTime += Time.deltaTime;
+            gameUICanvas.UpdateLevelTime(levelTime);
+
+            if (levelTime >= gameProperties.levelDurationSeconds)
+            {
+                gameProperties.IncrementLastLevel();
+                gameUICanvas.UpdateLevelNumber(gameProperties.LastLevel);
+                levelTime = 0;
+            }
         }
         
         ProduceBallsOnTrack();
@@ -199,16 +203,18 @@ public class Board : MonoBehaviour
             )
         );
         
-        foreach (BallSlot ballSlot in ballSlots)
-        {
-            ballSlot.speedMultiplier = gameProperties.GetSlotSpeedMultiplier(0.5f);
-        }
+        SpeedUpSlots(0.5f);
 
         yield return new WaitForSeconds(gameProperties.timeSlowDuration);
         
+        SpeedUpSlots(1);
+    }
+
+    private void SpeedUpSlots(float effectMultiplier)
+    {
         foreach (BallSlot ballSlot in ballSlots)
         {
-            ballSlot.speedMultiplier = gameProperties.GetSlotSpeedMultiplier(1);
+            ballSlot.speedMultiplier = gameProperties.GetSlotSpeedMultiplier(effectMultiplier);
         }
     }
 
@@ -225,17 +231,11 @@ public class Board : MonoBehaviour
         isReverse = true;
         shooter.isShooterDisabledFromOutside = true;
 
-        foreach (BallSlot ballSlot in ballSlots)
-        {
-            ballSlot.speedMultiplier = gameProperties.GetSlotSpeedMultiplier(-1);
-        }
+        SpeedUpSlots(-1);
 
         yield return new WaitForSeconds(gameProperties.reverseDuration);
         
-        foreach (BallSlot ballSlot in ballSlots)
-        {
-            ballSlot.speedMultiplier = gameProperties.GetSlotSpeedMultiplier(1);
-        }
+        SpeedUpSlots(1);
 
         isReverse = false;
         shooter.isShooterDisabledFromOutside = false;
@@ -347,6 +347,21 @@ public class Board : MonoBehaviour
         }
 
         return -1;
+    }
+
+    public void GameOver()
+    {
+        StartCoroutine(GameOverCo());
+    }
+
+    private IEnumerator GameOverCo()
+    {
+        shooter.isShooterDisabledFromOutside = true;
+        shooter.UpdateSprite();
+        isGameOver = true;
+        SpeedUpSlots(1.5f);
+        yield return new WaitForSeconds(2);
+        gameUICanvas.ShowGameOver();
     }
 
     public BallSlot[] BallSlotsByDistance => ballSlots.OrderBy(bs => bs.distanceTraveled).ToArray();
