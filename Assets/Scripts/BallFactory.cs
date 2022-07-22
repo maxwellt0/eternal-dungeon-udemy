@@ -19,6 +19,8 @@ public class BallFactory : MonoBehaviour
         BallType.Reverse,
         BallType.TimeSlow,
     };
+
+    private readonly Stack<BallType> spawningStack = new();
     
     public Ball ballPrefab;
     
@@ -35,16 +37,6 @@ public class BallFactory : MonoBehaviour
     public Sprite activeBombSprite;
     public Sprite activeReverseSprite;
     public Sprite activeTimeSlowSprite;
-
-    void Start()
-    {
-        
-    }
-    
-    void Update()
-    {
-        
-    }
 
     public Ball CreateBallAt(Vector3 point, BallType ballType)
     {
@@ -73,6 +65,10 @@ public class BallFactory : MonoBehaviour
     
     public BallType GetRandomBallType()
     {
+        if (spawningStack.Count > 0)
+        {
+            return spawningStack.Pop();
+        }
         return Random.Range(0f, 1f) > 0.2f ? GetRandomBallColor() : GetRandomBallSpecialType();
     }
     
@@ -116,5 +112,10 @@ public class BallFactory : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
+    }
+
+    public void AddTypeToStack(BallType type)
+    {
+        spawningStack.Push(type);
     }
 }

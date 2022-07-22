@@ -73,6 +73,7 @@ public class Board : MonoBehaviour
                 gameProperties.IncrementLastLevel();
                 gameUICanvas.UpdateLevelNumber(gameProperties.LastLevel);
                 levelTime = 0;
+                DestroyAllBallsInList(BallSlotsByDistance.Where(bs => bs.ball).ToList());
             }
         }
         
@@ -243,10 +244,10 @@ public class Board : MonoBehaviour
     
     private void AddBallsIfThereIsBomb(List<BallSlot> ballsToDestroySlots)
     {
-        BallSlot ballSlot = ballsToDestroySlots.FirstOrDefault(bs => bs.ball.type == BallType.Bomb);
-        if (ballSlot)
+        List<BallSlot> bombSlots = ballsToDestroySlots.Where(bs => bs.ball.type == BallType.Bomb).ToList();
+        foreach (BallSlot bombSlot in bombSlots)
         {
-            int indexOfBombSlot = Array.IndexOf(BallSlotsByDistance, ballSlot);
+            int indexOfBombSlot = Array.IndexOf(BallSlotsByDistance, bombSlot);
             for (int i = 1; i <= gameProperties.bombRadius; i++)
             {
                 int leftIndex = indexOfBombSlot - i;
@@ -268,7 +269,7 @@ public class Board : MonoBehaviour
 
     private void MoveSeparatedBallsBack()
     {
-        int firstEmptyIndex = Array.FindIndex(BallSlotsByDistance, bs => !bs.ball);
+        int firstEmptyIndex = Array.FindIndex(BallSlotsByDistance, 1, bs => !bs.ball);
         int firstNonEmptyIndexAfter = Array.FindIndex(BallSlotsByDistance, firstEmptyIndex, bs => bs.ball);
         int emptySlotsCount = firstNonEmptyIndexAfter - firstEmptyIndex;
 
@@ -294,7 +295,7 @@ public class Board : MonoBehaviour
 
     private List<BallSlot> GetSimilarBalls(BallSlot landedBallSlot)
     {
-        List<BallSlot> ballsToDestroySlots = new List<BallSlot> {landedBallSlot};
+        List<BallSlot> ballsToDestroySlots = new() {landedBallSlot};
         
         if (!landedBallSlot.ball)
         {

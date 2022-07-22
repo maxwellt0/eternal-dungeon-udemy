@@ -17,7 +17,7 @@ public class GameProperties : MonoBehaviour
 
     public float ballUpscaleSpeed = 2f;
     public float ballDownscaleSpeed = 2f;
-    public float ballSlotsSpeed = 4f;
+    public float ballSlotsSpeed = 1f;
     public float ballShootingSpeed = 20f;
     public float ballLandingSpeed = 5f;
     public float ballSlotSwitchingSpeed = 5f;
@@ -25,7 +25,7 @@ public class GameProperties : MonoBehaviour
     public int bombRadius = 1;
     public float reverseDuration = 2f;
     public float timeSlowDuration = 2f;
-    public float levelDurationSeconds = 10f;
+    public float levelDurationSeconds = 60f;
     public float slotSpeedUpPerLevel = 0.1f;
 
     private int lastLevel = 1;

@@ -46,12 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballUpscaleSpeed: 2
   ballDownscaleSpeed: 2
-  ballSlotsSpeed: 2
+  ballSlotsSpeed: 1
   ballShootingSpeed: 20
   ballLandingSpeed: 5
   ballSlotSwitchingSpeed: 5
   bombRadius: 1
   reverseDuration: 2
   timeSlowDuration: 2
-  levelDurationSeconds: 10
+  levelDurationSeconds: 60
   slotSpeedUpPerLevel: 0.1

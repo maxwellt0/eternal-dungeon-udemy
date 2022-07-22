@@ -45,11 +45,13 @@ public class Ball : MonoBehaviour
                 }
             
                 transform.localScale = Vector3.one * upscaleCounter;
+                transform.up = slot.transform.up;
                 break;
             }
             case BallState.SpawningToShoot:
             {
-                upscaleCounter += gameProperties.ballUpscaleSpeed * Time.deltaTime;
+                upscaleCounter += gameProperties.GetSlotSpeedMultiplier(1) 
+                                  * gameProperties.ballUpscaleSpeed * Time.deltaTime;
             
                 if (upscaleCounter >= 1)
                 {
@@ -65,7 +67,7 @@ public class Ball : MonoBehaviour
                 downscaleCounter -= multiplier * gameProperties.GetSlotSpeedMultiplier(1) 
                                                * gameProperties.ballDownscaleSpeed * Time.deltaTime;
             
-                if (downscaleCounter < 0)
+                if (downscaleCounter < 0 || board.isReverse && IsNearPathStart())
                 {
                     Destroy(gameObject);
                     return;
@@ -74,7 +76,8 @@ public class Ball : MonoBehaviour
                 transform.localScale = Vector3.one * downscaleCounter;
                 break;
             case BallState.Shooting:
-                transform.position += shootDirection * (gameProperties.ballShootingSpeed * Time.deltaTime);
+                transform.position += shootDirection * (gameProperties.GetSlotSpeedMultiplier(1)
+                                                        * gameProperties.ballShootingSpeed * Time.deltaTime);
                 break;
             case BallState.Landing:
                 transform.position =
@@ -100,12 +103,18 @@ public class Ball : MonoBehaviour
                 }
                 break;
             case BallState.InSlot:
+                transform.up = slot.transform.up;
                 break;
             case BallState.ReadyToShoot:
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
+    }
+
+    private bool IsNearPathStart()
+    {
+        return pathCreator.path.GetClosestDistanceAlongPath(transform.position) < 0.2f;
     }
 
     public void PlaceInSlotTransform()
