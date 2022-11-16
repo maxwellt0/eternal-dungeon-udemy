@@ -15,7 +15,7 @@ public class Board : MonoBehaviour
 
     private BallSlot[] ballSlots;
 
-    void Start()
+    private void Start()
     {
         pathCreator = FindObjectOfType<PathCreator>();
         ballFactory = FindObjectOfType<BallFactory>();
@@ -40,8 +40,13 @@ public class Board : MonoBehaviour
             ballSlots[i] = ballSlot;
         }
     }
-    
-    void Update()
+
+    private void Update()
+    {
+        ProduceBallsOnTrack();
+    }
+
+    private void ProduceBallsOnTrack()
     {
         BallSlot zeroSlot = BallSlotsByDistance[0];
         if (!zeroSlot.ball)
@@ -53,7 +58,7 @@ public class Board : MonoBehaviour
             ball.state = BallState.Spawning;
         }
     }
-    
+
     public void LandBall(BallSlot collidedSlot, Ball landingBall)
     {
         BallSlot[] ballSlotsByDistance = BallSlotsByDistance;
@@ -78,7 +83,8 @@ public class Board : MonoBehaviour
         }
         
         landingBall.Land();
-        foreach (BallSlot ballSlot in ballSlotsByDistance.Where(bs => bs.ball && bs.ball.state == BallState.InSlot))
+        foreach (BallSlot ballSlot in ballSlotsByDistance
+            .Where(bs => bs.ball && bs.ball.state == BallState.InSlot))
         {
             ballSlot.ball.MoveToSlot();
         }
@@ -90,10 +96,22 @@ public class Board : MonoBehaviour
     {
         yield return new WaitUntil(() => BallSlotsByDistance.All(bs =>
             !bs.ball || bs.ball.state != BallState.Landing && bs.ball.state != BallState.SwitchingSlots));
-        Debug.Log("Ready To Destroy Matching Balls!");
 
-        List<BallSlot> ballsToDestroySlots = new List<BallSlot>();
-        ballsToDestroySlots.Add(landedBallSlot);
+        List<BallSlot> ballsToDestroySlots = GetSimilarBalls(landedBallSlot);
+
+        if (ballsToDestroySlots.Count >= 3)
+        {
+            foreach (BallSlot ballsToDestroySlot in ballsToDestroySlots)
+            {
+                ballsToDestroySlot.ball.StartDestroying();
+                ballsToDestroySlot.AssignBall(null);
+            }
+        }
+    }
+
+    private List<BallSlot> GetSimilarBalls(BallSlot landedBallSlot)
+    {
+        List<BallSlot> ballsToDestroySlots = new List<BallSlot> {landedBallSlot};
         int indexOfLandedBallSlot = Array.IndexOf(BallSlotsByDistance, landedBallSlot);
 
         for (int i = indexOfLandedBallSlot - 1; i >= 0; i--)
@@ -122,14 +140,7 @@ public class Board : MonoBehaviour
             }
         }
 
-        if (ballsToDestroySlots.Count >= 3)
-        {
-            foreach (BallSlot ballsToDestroySlot in ballsToDestroySlots)
-            {
-                ballsToDestroySlot.ball.StartDestroying();
-                ballsToDestroySlot.AssignBall(null);
-            }
-        }
+        return ballsToDestroySlots;
     }
 
     private static int FirstEmptySlotIndexAfter(int indexOfCollidedSlot, BallSlot[] ballSlotsByDistance)
