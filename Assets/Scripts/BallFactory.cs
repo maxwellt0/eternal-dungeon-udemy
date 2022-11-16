@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public class BallFactory : MonoBehaviour
 {
-    private static readonly BallType[] Colors =
+    private static readonly BallType[] Colors = new[]
     {
         BallType.Red,
         BallType.Green,
@@ -14,6 +14,7 @@ public class BallFactory : MonoBehaviour
     };
     
     public Ball ballPrefab;
+
     public Sprite redSprite;
     public Sprite greenSprite;
     public Sprite blueSprite;
@@ -47,7 +48,7 @@ public class BallFactory : MonoBehaviour
     {
         return Colors[Random.Range(0, Colors.Length)];
     }
-    
+
     private Sprite GetSpriteByType(BallType type)
     {
         switch (type)
