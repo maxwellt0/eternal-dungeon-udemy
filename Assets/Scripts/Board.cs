@@ -66,7 +66,7 @@ public class Board : MonoBehaviour
         
         Ball ball = ballFactory.CreateBallAt(zeroSlot.transform.position, ballFactory.GetRandomBallType());
         zeroSlot.AssignBall(ball);
-        ball.transform.parent = zeroSlot.transform;
+        ball.PlaceInSlotTransform();
         ball.transform.localScale = Vector3.zero;
         ball.state = BallState.Spawning;
     }

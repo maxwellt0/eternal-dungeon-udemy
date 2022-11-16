@@ -86,7 +86,7 @@ public class Ball : MonoBehaviour
         }
     }
 
-    private void PlaceInSlotTransform()
+    public void PlaceInSlotTransform()
     {
         transform.position = slot.transform.position;
         transform.parent = slot.transform;
