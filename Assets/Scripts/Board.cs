@@ -106,6 +106,36 @@ public class Board : MonoBehaviour
                 ballsToDestroySlot.ball.StartDestroying();
                 ballsToDestroySlot.AssignBall(null);
             }
+            
+            yield return new WaitForSeconds(0.5f);
+
+            MoveSeparatedBallsBack();
+        }
+    }
+    
+    private void MoveSeparatedBallsBack()
+    {
+        int firstEmptyIndex = Array.FindIndex(BallSlotsByDistance, bs => !bs.ball);
+        int firstNonEmptyIndexAfter = Array.FindIndex(BallSlotsByDistance, firstEmptyIndex, bs => bs.ball);
+        int emptySlotsCount = firstNonEmptyIndexAfter - firstEmptyIndex;
+
+        if (firstNonEmptyIndexAfter == -1 || firstEmptyIndex == -1)
+        {
+            return;
+        }
+
+        for (int i = firstEmptyIndex; i < BallSlotsByDistance.Length - emptySlotsCount; i++)
+        {
+            BallSlotsByDistance[i].AssignBall(BallSlotsByDistance[i + emptySlotsCount].ball);
+            if (BallSlotsByDistance[i].ball)
+            {
+                BallSlotsByDistance[i].ball.MoveToSlot();
+            }
+        }
+
+        for (int i = BallSlotsByDistance.Length - emptySlotsCount; i < BallSlotsByDistance.Length; i++)
+        {
+            BallSlotsByDistance[i].AssignBall(null);
         }
     }
 
