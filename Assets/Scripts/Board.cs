@@ -9,7 +9,7 @@ public class Board : MonoBehaviour
 {
     public BallSlot ballSlotPrefab;
     public GameObject ballSlotsContainer;
-
+    
     public bool isDestroyingMatchingBalls;
     public bool isReverse;
 
@@ -133,11 +133,7 @@ public class Board : MonoBehaviour
                 StartCoroutine(TimeSlowCo());
             }
 
-            foreach (BallSlot ballsToDestroySlot in ballsToDestroySlots)
-            {
-                ballsToDestroySlot.ball.StartDestroying();
-                ballsToDestroySlot.AssignBall(null);
-            }
+            DestroyAllBallsInList(ballsToDestroySlots);
 
             collidedBallSlot = ballsToDestroySlots[0];
 
@@ -149,6 +145,16 @@ public class Board : MonoBehaviour
         yield return new WaitUntil(() => BallSlotsByDistance.All(bs =>
             !bs.ball || bs.ball.state != BallState.SwitchingSlots));
         isDestroyingMatchingBalls = false;
+    }
+    
+    private void DestroyAllBallsInList(List<BallSlot> ballsToDestroySlots)
+    {
+        foreach (BallSlot ballsToDestroySlot in ballsToDestroySlots)
+        {
+            ballsToDestroySlot.ball.UpdateSprite(ballFactory.GetActiveSpriteByType(ballsToDestroySlot.ball.type));
+            ballsToDestroySlot.ball.StartDestroying();
+            ballsToDestroySlot.AssignBall(null);
+        }
     }
     
     private IEnumerator TimeSlowCo()
@@ -174,7 +180,7 @@ public class Board : MonoBehaviour
             ballSlot.speedMultiplier = 1;
         }
     }
-    
+
     private IEnumerator StartReverseCo()
     {
         yield return new WaitUntil(() => BallSlotsByDistance.All(bs =>

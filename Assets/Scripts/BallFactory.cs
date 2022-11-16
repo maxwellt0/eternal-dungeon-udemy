@@ -21,6 +21,7 @@ public class BallFactory : MonoBehaviour
     };
     
     public Ball ballPrefab;
+    
     public Sprite redSprite;
     public Sprite greenSprite;
     public Sprite blueSprite;
@@ -28,6 +29,13 @@ public class BallFactory : MonoBehaviour
     public Sprite reverseSprite;
     public Sprite timeSlowSprite;
     
+    public Sprite activeRedSprite;
+    public Sprite activeGreenSprite;
+    public Sprite activeBlueSprite;
+    public Sprite activeBombSprite;
+    public Sprite activeReverseSprite;
+    public Sprite activeTimeSlowSprite;
+
     void Start()
     {
         
@@ -84,6 +92,27 @@ public class BallFactory : MonoBehaviour
                 return reverseSprite;
             case BallType.TimeSlow:
                 return timeSlowSprite;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
+    }
+    
+    public Sprite GetActiveSpriteByType(BallType type)
+    {
+        switch (type)
+        {
+            case BallType.Red:
+                return activeRedSprite;
+            case BallType.Green:
+                return activeGreenSprite;
+            case BallType.Blue:
+                return activeBlueSprite;
+            case BallType.Bomb:
+                return activeBombSprite;
+            case BallType.Reverse:
+                return activeReverseSprite;
+            case BallType.TimeSlow:
+                return activeTimeSlowSprite;
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }

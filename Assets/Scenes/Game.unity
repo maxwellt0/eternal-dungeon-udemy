@@ -620,6 +620,14 @@ MonoBehaviour:
   bombSprite: {fileID: 21300000, guid: 9d4e118c864364904a72b125d15eeea8, type: 3}
   reverseSprite: {fileID: 21300000, guid: 240a52dbb5a0c4cd286eb2ebf0cc230a, type: 3}
   timeSlowSprite: {fileID: 21300000, guid: f867828d6e8a94144ae84e893e2bb107, type: 3}
+  activeRedSprite: {fileID: 21300000, guid: 0b17b935f380045569c8d604d8ea39aa, type: 3}
+  activeGreenSprite: {fileID: 21300000, guid: 6c9a89d4ff20743188e9c95517a69740, type: 3}
+  activeBlueSprite: {fileID: 21300000, guid: 287e55e97f72e4a65aee82885c4a061a, type: 3}
+  activeBombSprite: {fileID: 21300000, guid: e59f8f2ae86484a51aeb2d85e994395e, type: 3}
+  activeReverseSprite: {fileID: 21300000, guid: de397077e5ece4159a667823b68b8295,
+    type: 3}
+  activeTimeSlowSprite: {fileID: 21300000, guid: 7b281b68080fe4906a45ab3a32fc8447,
+    type: 3}
 --- !u!4 &1968165790
 Transform:
   m_ObjectHideFlags: 0
