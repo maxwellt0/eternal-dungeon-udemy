@@ -65,7 +65,7 @@ public class Ball : MonoBehaviour
         {
             BallSlot ballSlot = other.GetComponent<BallSlot>();
 
-            if (ballSlot.ball)
+            if (ballSlot.ball && state == BallState.Shooting)
             {
                 Debug.Log("Boo!!");
             }
