@@ -82,7 +82,7 @@ public class Ball : MonoBehaviour
         }
     }
 
-    public void PlaceInSlotTransform()
+    private void PlaceInSlotTransform()
     {
         transform.position = slot.transform.position;
         transform.parent = slot.transform;

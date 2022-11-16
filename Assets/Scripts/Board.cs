@@ -9,7 +9,7 @@ public class Board : MonoBehaviour
 {
     public BallSlot ballSlotPrefab;
     public GameObject ballSlotsContainer;
-    
+
     public bool isDestroyingMatchingBalls;
     public bool isReverse;
 
@@ -66,7 +66,7 @@ public class Board : MonoBehaviour
         
         Ball ball = ballFactory.CreateBallAt(zeroSlot.transform.position, ballFactory.GetRandomBallType());
         zeroSlot.AssignBall(ball);
-        ball.PlaceInSlotTransform();
+        ball.transform.parent = zeroSlot.transform;
         ball.transform.localScale = Vector3.zero;
         ball.state = BallState.Spawning;
     }
