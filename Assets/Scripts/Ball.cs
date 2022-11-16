@@ -7,11 +7,10 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     private GameProperties gameProperties;
-
     private Board board;
-
+    
     private CircleCollider2D circleCollider2D;
-
+    
     public BallSlot slot;
     public BallState state;
     public BallType type;
@@ -89,16 +88,6 @@ public class Ball : MonoBehaviour
         circleCollider2D.enabled = true;
     }
 
-    public void Land()
-    {
-        state = BallState.Landing;
-    }
-
-    public void MoveToSlot()
-    {
-        state = BallState.SwitchingSlots;
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Ball Slot"))
@@ -112,5 +101,20 @@ public class Ball : MonoBehaviour
                 circleCollider2D.enabled = false;
             }
         }
+    }
+    
+    public void Land()
+    {
+        state = BallState.Landing;
+    }
+
+    public void MoveToSlot()
+    {
+        state = BallState.SwitchingSlots;
+    }
+    
+    public void StartDestroying()
+    {
+        state = BallState.Destroying;
     }
 }
