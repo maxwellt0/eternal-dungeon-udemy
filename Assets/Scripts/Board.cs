@@ -252,7 +252,7 @@ public class Board : MonoBehaviour
 
     private void MoveSeparatedBallsBack()
     {
-        int firstEmptyIndex = Array.FindIndex(BallSlotsByDistance, bs => !bs.ball);
+        int firstEmptyIndex = Array.FindIndex(BallSlotsByDistance, 1, bs => !bs.ball);
         int firstNonEmptyIndexAfter = Array.FindIndex(BallSlotsByDistance, firstEmptyIndex, bs => bs.ball);
         int emptySlotsCount = firstNonEmptyIndexAfter - firstEmptyIndex;
 
