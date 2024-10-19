@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -182,7 +181,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 88905e8ce94c64ab9b5d0f1e4f7a98f5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6df6557959063490c8f601ab462c2687, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -200,14 +199,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 32495348}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1 &42545685
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,6 +372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -849,6 +849,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -1213,7 +1214,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 9.5
+  orthographic size: 9.6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2527,7 +2528,7 @@ GameObject:
   m_IsActive: 1
 --- !u!95 &1526678593
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2544,7 +2545,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!212 &1526678594
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2776,19 +2778,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballPrefab: {fileID: 6182612035540633547, guid: ba6722b744b934053bdb1c161983d044,
     type: 3}
-  redSprite: {fileID: 21300000, guid: d177e700d94774fd4a5028a8e4e66eb0, type: 3}
-  greenSprite: {fileID: 21300000, guid: 5ee29fc23ea0a42a48900a74af0e95bb, type: 3}
-  blueSprite: {fileID: 21300000, guid: 0ae308a654f37463c84bd82af64c554a, type: 3}
-  bombSprite: {fileID: 21300000, guid: 9d4e118c864364904a72b125d15eeea8, type: 3}
-  reverseSprite: {fileID: 21300000, guid: 240a52dbb5a0c4cd286eb2ebf0cc230a, type: 3}
-  timeSlowSprite: {fileID: 21300000, guid: f867828d6e8a94144ae84e893e2bb107, type: 3}
-  activeRedSprite: {fileID: 21300000, guid: 0b17b935f380045569c8d604d8ea39aa, type: 3}
-  activeGreenSprite: {fileID: 21300000, guid: 6c9a89d4ff20743188e9c95517a69740, type: 3}
-  activeBlueSprite: {fileID: 21300000, guid: 287e55e97f72e4a65aee82885c4a061a, type: 3}
-  activeBombSprite: {fileID: 21300000, guid: e59f8f2ae86484a51aeb2d85e994395e, type: 3}
-  activeReverseSprite: {fileID: 21300000, guid: de397077e5ece4159a667823b68b8295,
+  redSprite: {fileID: 21300000, guid: d9b5ce8910a1041679a00c5c5ed25548, type: 3}
+  greenSprite: {fileID: 21300000, guid: 26630f7755a4b448bbbaecd96a2fa7a8, type: 3}
+  blueSprite: {fileID: 21300000, guid: 8415bfb7b8c244906a2efd0ddfd54443, type: 3}
+  bombSprite: {fileID: 21300000, guid: d9b5ce8910a1041679a00c5c5ed25548, type: 3}
+  reverseSprite: {fileID: 21300000, guid: 8415bfb7b8c244906a2efd0ddfd54443, type: 3}
+  timeSlowSprite: {fileID: 21300000, guid: d9b5ce8910a1041679a00c5c5ed25548, type: 3}
+  activeRedSprite: {fileID: 21300000, guid: ab7439c873fbb43eba48296e523bd83d, type: 3}
+  activeGreenSprite: {fileID: 21300000, guid: e696ac0d239f541b8b0f01f6607313d8, type: 3}
+  activeBlueSprite: {fileID: 21300000, guid: 6f9116d38dad944f0ba3c8b302b0acf6, type: 3}
+  activeBombSprite: {fileID: 21300000, guid: ab7439c873fbb43eba48296e523bd83d, type: 3}
+  activeReverseSprite: {fileID: 21300000, guid: 6f9116d38dad944f0ba3c8b302b0acf6,
     type: 3}
-  activeTimeSlowSprite: {fileID: 21300000, guid: 7b281b68080fe4906a45ab3a32fc8447,
+  activeTimeSlowSprite: {fileID: 21300000, guid: e696ac0d239f541b8b0f01f6607313d8,
     type: 3}
 --- !u!4 &1968165790
 Transform:
@@ -2895,7 +2897,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 20
-  m_Sprite: {fileID: 21300000, guid: 9c3bc9fedc6d34a999265737e12ba3ee, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d7b86da3b693f42f594ab35570c4b1bb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2935,8 +2937,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootPoint: {fileID: 1988823200}
-  activeSprite: {fileID: 21300000, guid: f55133870fc0346b195f6cc7cb8af4b8, type: 3}
-  inactiveSprite: {fileID: 21300000, guid: 9c3bc9fedc6d34a999265737e12ba3ee, type: 3}
+  activeSprite: {fileID: 21300000, guid: 365d5a0f26b064e4aad7cd5d85ebfaeb, type: 3}
+  inactiveSprite: {fileID: 21300000, guid: d7b86da3b693f42f594ab35570c4b1bb, type: 3}
   nextShootBall: {fileID: 0}
   isShooterDisabledFromOutside: 0
 --- !u!1 &2129432382
