@@ -12,7 +12,7 @@ public class BallSlot : MonoBehaviour
 
     void Start()
     {
-        pathCreator = FindObjectOfType<PathCreator>();
+        pathCreator = FindFirstObjectByType<PathCreator>();
     }
     
     void Update()

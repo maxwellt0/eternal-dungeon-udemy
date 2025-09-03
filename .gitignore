@@ -67,7 +67,3 @@ ProjectSettings/ProjectVersion.txt
 .DS_Store
 *.log
 Screenshots
-
-# Used Packages
-Assets/PathCreator
-Assets/PathCreator.meta

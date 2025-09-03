@@ -16,7 +16,7 @@ public class Board : MonoBehaviour
 
     void Start()
     {
-        pathCreator = FindObjectOfType<PathCreator>();
+        pathCreator = FindFirstObjectByType<PathCreator>();
         
         InitBallSlots();
     }
