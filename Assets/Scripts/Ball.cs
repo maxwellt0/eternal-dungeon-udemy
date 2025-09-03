@@ -21,8 +21,8 @@ public class Ball : MonoBehaviour
 
     private void Start()
     {
-        gameProperties = FindObjectOfType<GameProperties>();
-        board = FindObjectOfType<Board>();
+        gameProperties = FindFirstObjectByType<GameProperties>();
+        board = FindFirstObjectByType<Board>();
 
         circleCollider2D = GetComponent<CircleCollider2D>();
         circleCollider2D.enabled = false;
