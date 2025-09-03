@@ -16,7 +16,7 @@ public class Ball : MonoBehaviour
 
     private void Start()
     {
-        gameProperties = FindObjectOfType<GameProperties>();
+        gameProperties = FindFirstObjectByType<GameProperties>();
     }
 
     private void Update()

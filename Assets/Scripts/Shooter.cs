@@ -11,7 +11,7 @@ public class Shooter : MonoBehaviour
     
     void Start()
     {
-        ballFactory = FindObjectOfType<BallFactory>();
+        ballFactory = FindFirstObjectByType<BallFactory>();
         
         mainCamera = Camera.main;
     }
